@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gathrr/core/colors.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -20,7 +21,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(4),
       onTap: isActive == true && isLoading == false ? onTap : () {},
       child: Container(
         height: 50,
@@ -29,8 +30,8 @@ class PrimaryButton extends StatelessWidget {
               ? isWhiteColor
                   ? Colors.white
                   : const Color(0xFFF3F3F3)
-              : Colors.blue,
-          borderRadius: BorderRadius.circular(6),
+              : primaButtonColor,
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Center(
           child: isLoading == true

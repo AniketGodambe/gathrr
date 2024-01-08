@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gathrr/utils/primary_button.dart';
+import 'package:gathrr/core/primary_button.dart';
 
 class SuccessPopup extends StatelessWidget {
   final String successMsg, successTitle;

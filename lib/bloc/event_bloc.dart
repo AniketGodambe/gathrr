@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:gathrr/model/event_list_model/event_list_model.dart';
-import 'package:gathrr/utils/api_urls.dart';
+import 'package:gathrr/core/api_urls.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -9,7 +11,7 @@ class PostBloc {
 
   Stream<List<EventListModel>> get posts => _postController.stream;
 
-  void fetchEventList() async {
+  fetchEventList() async {
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.get(
@@ -22,11 +24,13 @@ class PostBloc {
             .map((i) => EventListModel.fromJson(i))
             .toList();
         _postController.sink.add(data);
+        return data;
       } else {
-        throw Exception('Failed to load posts');
+        return [];
       }
     } catch (e) {
-      throw Exception('Error: $e');
+      log(e.toString());
+      return [];
     }
   }
 

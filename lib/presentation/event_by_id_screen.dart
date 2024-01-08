@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:gathrr/controller/event_controller.dart';
+import 'package:gathrr/bloc/event_bloc.dart';
 import 'package:gathrr/model/event_list_model/event_list_model.dart';
 
-class EventListPage extends StatefulWidget {
-  const EventListPage({super.key});
+class EvenntByIdPage extends StatefulWidget {
+  const EvenntByIdPage({super.key});
 
   @override
-  State<EventListPage> createState() => _EventListPageState();
+  State<EvenntByIdPage> createState() => _EvenntByIdPageState();
 }
 
-class _EventListPageState extends State<EventListPage> {
+class _EvenntByIdPageState extends State<EvenntByIdPage> {
   final PostBloc bloc = PostBloc();
 
   @override
   void initState() {
-    bloc.fetchEventList();
+    bloc.getEventById(eventId: "eventId");
     super.initState();
   }
 

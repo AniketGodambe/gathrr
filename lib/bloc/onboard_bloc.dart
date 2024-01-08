@@ -1,13 +1,20 @@
 import 'package:gathrr/model/event_list_model/event_list_model.dart';
-import 'package:gathrr/utils/api_urls.dart';
+import 'package:gathrr/core/api_urls.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
-class PostBloc {
-  final _postController = StreamController<List<EventListModel>>.broadcast();
-  Stream<List<EventListModel>> get posts => _postController.stream;
+class OnBoardBlock {
+  final onboardController = StreamController<List<EventListModel>>.broadcast();
 
-  void sendOtp() async {
+  final titleController = StreamController<bool>.broadcast();
+  final mobileController = StreamController<String>.broadcast();
+  Stream<bool> get titleStream => titleController.stream;
+
+  void updateTitle(bool newTitle) {
+    titleController.add(newTitle);
+  }
+
+  void sendOtp({required String mobile}) async {
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.get(
@@ -41,6 +48,6 @@ class PostBloc {
   }
 
   void dispose() {
-    _postController.close();
+    onboardController.close();
   }
 }
