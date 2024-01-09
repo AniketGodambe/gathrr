@@ -25,8 +25,26 @@ class _EventListPageState extends State<EventListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffF9F9F9),
       appBar: AppBar(
-        title: Text(formatDate(format: 'EEEE, dd MMMM')),
+        backgroundColor: const Color(0xffF9F9F9),
+        toolbarHeight: 70,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(formatDate(format: 'EEEE, dd MMMM')),
+            const Text(
+              'Kalyani Nagar Pune, MH IN',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.w400,
+                height: 0,
+              ),
+            ),
+          ],
+        ),
         actions: [
           const Center(
             child: SvgContainerWidget(

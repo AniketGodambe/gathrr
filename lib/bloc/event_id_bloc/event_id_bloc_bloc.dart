@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:gathrr/bloc/repo/event_by_id_repo.dart';
+import 'package:gathrr/repo/event_by_id_repo.dart';
 import 'package:gathrr/model/event_by_id_model.dart';
 
 part 'event_id_bloc_event.dart';

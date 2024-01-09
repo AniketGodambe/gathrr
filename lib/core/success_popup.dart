@@ -26,7 +26,7 @@ class SuccessPopup extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: kwhite,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -35,7 +35,7 @@ class SuccessPopup extends StatelessWidget {
             Text(
               successTitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: kblack,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
@@ -48,7 +48,7 @@ class SuccessPopup extends StatelessWidget {
                     successMsg,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: secondaryTextColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),

@@ -28,7 +28,7 @@ class PrimaryButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: isActive == false
               ? isWhiteColor
-                  ? Colors.white
+                  ? kwhite
                   : const Color(0xFFF3F3F3)
               : primaButtonColor,
           borderRadius: BorderRadius.circular(4),
@@ -39,7 +39,7 @@ class PrimaryButton extends StatelessWidget {
                   height: 40,
                   child: LoadingIndicator(
                     indicatorType: Indicator.ballPulse,
-                    colors: [Colors.white],
+                    colors: [kwhite],
                     strokeWidth: 2,
                   ),
                 )
@@ -49,8 +49,8 @@ class PrimaryButton extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 15,
-                      color: isActive == false ? Colors.grey : Colors.white,
+                      fontSize: 18,
+                      color: isActive == false ? Colors.grey : kwhite,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

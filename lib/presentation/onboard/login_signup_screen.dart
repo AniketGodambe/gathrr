@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gathrr/bloc/auth/auth_bloc.dart';
 import 'package:gathrr/core/colors.dart';
-import 'package:gathrr/presentation/onboard/otp_screen.dart';
-import 'package:get/get.dart';
-import 'package:gathrr/bloc/onboard_bloc.dart';
 import 'package:gathrr/core/consts.dart';
 import 'package:gathrr/core/custom_textstyle.dart';
 import 'package:gathrr/core/primary_button.dart';
@@ -17,9 +15,8 @@ class LoginSignUpScreen extends StatefulWidget {
 }
 
 class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
-  final OnBoardBlock onBoardBlock = OnBoardBlock();
-
   final TextEditingController phoneController = TextEditingController();
+  final AuthBloc authBloc = AuthBloc();
 
   @override
   void initState() {
@@ -28,16 +25,15 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: const [],
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: StreamBuilder(
-            stream: onBoardBlock.titleStream,
-            initialData: false,
-            builder: (context, snapshot) {
-              final bool joinGathrr = snapshot.data!;
-              return SizedBox(
+    return Scaffold(
+        body: BlocConsumer<AuthBloc, AuthState>(
+            bloc: authBloc,
+            listenWhen: (previous, current) => current is AuthInitial,
+            buildWhen: (previous, current) => current is! AuthInitial,
+            listener: (context, state) {},
+            builder: (context, state) {
+              return SingleChildScrollView(
+                  child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,13 +54,15 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           kheight40,
                           kheight20,
                           Text(
-                            joinGathrr ? 'Join Gathrr' : 'Login to Gathrr',
+                            state.runtimeType == LoginState
+                                ? "Join Gathrr"
+                                : 'Login to Gathrr',
                             style: titleStyle.copyWith(fontSize: 30),
                           ),
                           kheight20,
                           Text(
-                            joinGathrr
-                                ? 'Join Gathrr to attend events and network with people from your industry.\n'
+                            state.runtimeType == LoginState
+                                ? 'Join Gathrr to attend events network with the people from your industry.'
                                 : 'Gathrr is the go-to app to attend events and network with people from your industry.',
                             style: subtitleStyle,
                           ),
@@ -75,7 +73,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: const ShapeDecoration(
-                        color: Colors.white,
+                        color: kwhite,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(32),
@@ -89,7 +87,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           kheight10,
-                          Text(
+                          const Text(
                             'Phone number',
                             style: TextStyle(
                               color: kblack,
@@ -99,7 +97,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           ),
                           kheight20,
                           CustomInputField(
-                            initialValue: "",
+                            textController: phoneController,
                             hintText: 'Please enter your phone number',
                             onChanged: (val) {},
                             title: '',
@@ -107,8 +105,8 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             maxLength: 10,
                             readOnly: false,
                             validator: (val) {
-                              if (val!.isEmpty) {
-                                return "Enter state";
+                              if (state.runtimeType == AutEmptyPhoneState) {
+                                return "Enter phone";
                               }
                               return null;
                             },
@@ -143,39 +141,45 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           ),
                           kheight40,
                           PrimaryButton(
+                            isLoading: state.runtimeType == AuthLodingState,
                             onTap: () {
-                              onBoardBlock.sendOtp(mobile: '');
-
-                              // onBoardBlock.onboardController
-
-                              Get.to(() => const OtpScreen());
+                              authBloc.add(AuthLoginEvent(
+                                  phone: phoneController.text,
+                                  isNavigation: true));
                             },
                             title: "Login",
                           ),
                           kheight40,
-                          GestureDetector(
-                            onTap: () {
-                              onBoardBlock.updateTitle(!joinGathrr);
-                            },
-                            child: Center(
-                              child: Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          '${joinGathrr ? "Already have an account?" : "New to gathrr?"} ',
-                                      style:
-                                          subtitleStyle.copyWith(fontSize: 20),
-                                    ),
-                                    TextSpan(
-                                        text:
-                                            ' ${joinGathrr ? 'Login' : 'Register'}',
-                                        style: loginregistertextStyle.copyWith(
-                                            fontSize: 20)),
-                                  ],
-                                ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.runtimeType == LoginState
+                                    ? "Already have an account? "
+                                    : "New to gathrr? ",
+                                style: subtitleStyle.copyWith(fontSize: 20),
                               ),
-                            ),
+                              GestureDetector(
+                                onTap: () {
+                                  if (state.runtimeType == LoginState) {
+                                    authBloc.add(const ChangeObnoardModeEvent(
+                                      mode: 'register',
+                                    ));
+                                  } else {
+                                    authBloc.add(const ChangeObnoardModeEvent(
+                                        mode: 'login'));
+                                  }
+                                },
+                                child: Text(
+                                  state.runtimeType == LoginState
+                                      ? "login"
+                                      : 'Register',
+                                  style: loginregistertextStyle.copyWith(
+                                      fontSize: 20),
+                                ),
+                              )
+                            ],
                           ),
                           kheight40,
                           kheight20,
@@ -184,11 +188,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     )
                   ],
                 ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
+              ));
+            }));
   }
 }

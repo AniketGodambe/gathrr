@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:gathrr/bloc/repo/event_list_repo.dart';
+import 'package:gathrr/repo/event_list_repo.dart';
 
 import 'dart:developer';
 

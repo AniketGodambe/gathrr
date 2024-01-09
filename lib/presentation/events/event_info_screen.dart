@@ -7,15 +7,15 @@ import 'package:gathrr/core/error_dialog.dart';
 import 'package:gathrr/core/primary_button.dart';
 import 'package:gathrr/presentation/events/widgets.dart';
 
-class EventByIdPage extends StatefulWidget {
+class EventInfoScreen extends StatefulWidget {
   final String eventId;
-  const EventByIdPage({super.key, required this.eventId});
+  const EventInfoScreen({super.key, required this.eventId});
 
   @override
-  State<EventByIdPage> createState() => _EventByIdPageState();
+  State<EventInfoScreen> createState() => _EventInfoScreenState();
 }
 
-class _EventByIdPageState extends State<EventByIdPage> {
+class _EventInfoScreenState extends State<EventInfoScreen> {
   final EventIdBlocBloc eventidBloc = EventIdBlocBloc();
 
   @override
@@ -27,7 +27,7 @@ class _EventByIdPageState extends State<EventByIdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kwhite,
       appBar: AppBar(
         actions: [
           const Center(
@@ -86,7 +86,7 @@ class _EventByIdPageState extends State<EventByIdPage> {
                               successState.eventByIdModel.generalInfo,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
-                                color: Colors.black,
+                                color: kblack,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -94,7 +94,7 @@ class _EventByIdPageState extends State<EventByIdPage> {
                             const Text(
                               '(No taxes needed) ',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: kblack,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -164,16 +164,16 @@ class _EventByIdPageState extends State<EventByIdPage> {
                               child: const TabBar(
                                 isScrollable: false,
                                 padding: EdgeInsets.symmetric(
-                                  vertical: 10,
-                                ),
+                                    vertical: 10, horizontal: 5),
                                 labelStyle: TextStyle(
                                   color: Color(0xFF001833),
-                                  fontSize: 12,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w700,
                                 ),
                                 labelColor: Color(0xFF001833),
                                 unselectedLabelColor: Color(0xFF8C8C8C),
                                 indicatorColor: Color(0xFF001833),
+                                indicatorSize: TabBarIndicatorSize.label,
                                 tabs: [
                                   Text('Event info'),
                                   Text('Agenda'),
@@ -190,20 +190,17 @@ class _EventByIdPageState extends State<EventByIdPage> {
                                     successState: successState,
                                     eventidBloc: eventidBloc,
                                   ),
-                                  const SizedBox(
-                                    child: Center(
-                                      child: Text("Agenda Not available"),
-                                    ),
+                                  const Text(
+                                    "Agenda Not available",
+                                    textAlign: TextAlign.center,
                                   ),
-                                  const SizedBox(
-                                    child: Center(
-                                      child: Text("Sponsors Not available"),
-                                    ),
+                                  const Text(
+                                    "Sponsors Not available",
+                                    textAlign: TextAlign.center,
                                   ),
-                                  const SizedBox(
-                                    child: Center(
-                                      child: Text("Speakers Not available"),
-                                    ),
+                                  const Text(
+                                    "Speakers Not available",
+                                    textAlign: TextAlign.center,
                                   ),
                                 ],
                               ),

@@ -24,7 +24,7 @@ class ErrorPopup extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: kwhite,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(

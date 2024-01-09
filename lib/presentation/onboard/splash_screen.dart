@@ -11,41 +11,42 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body:
-
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          kheight40,
-          Center(
-            child: Image.asset(
-              "assets/obboard_gahtrr.png",
-              height: 80,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            kheight40,
+            Center(
+              child: Image.asset(
+                "assets/obboard_gahtrr.png",
+                height: 80,
+              ),
             ),
-          ),
-          Text(
-            'Gathrr: Where Events\nCome to Life, Effortlessly!',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: kblack,
-              fontSize: 24,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w400,
+            const Text(
+              'Gathrr: Where Events\nCome to Life, Effortlessly!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: kblack,
+                fontSize: 24,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+              ),
             ),
-          ),
-          Center(
-            child: Image.asset(
-              "assets/onbaord_networking.png",
+            Center(
+              child: Image.asset(
+                "assets/onbaord_networking.png",
+              ),
             ),
-          ),
-          kheight20,
-          PrimaryButton(
-              onTap: () {
-                Get.to(() => const LoginSignUpScreen());
-              },
-              title: "Get Started"),
-        ],
+            kheight20,
+            PrimaryButton(
+                onTap: () {
+                  Get.to(() => const LoginSignUpScreen());
+                },
+                title: "Get Started"),
+          ],
+        ),
       ),
     );
   }
