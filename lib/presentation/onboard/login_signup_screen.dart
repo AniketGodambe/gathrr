@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/presentation/onboard/otp_screen.dart';
 import 'package:get/get.dart';
 import 'package:gathrr/bloc/onboard_bloc.dart';
@@ -28,7 +29,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [],
+      providers: const [],
       child: Scaffold(
         body: SingleChildScrollView(
           child: StreamBuilder(
@@ -88,10 +89,10 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           kheight10,
-                          const Text(
+                          Text(
                             'Phone number',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: kblack,
                               fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),

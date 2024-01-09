@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/security.dart';
-import 'package:gathrr/presentation/event_list_screen.dart';
+import 'package:gathrr/presentation/events/event_list_screen.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -28,13 +28,13 @@ class MyApp extends StatelessWidget {
             fontFamily: "Lato",
             appBarTheme: const AppBarTheme(
               backgroundColor: Colors.white,
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: IconThemeData(color: Color(0xff8C8C8C), size: 30),
               elevation: 0,
               centerTitle: false,
               titleTextStyle: TextStyle(
                 fontFamily: "Lato",
                 fontSize: 20,
-                color: Colors.black,
+                color: kblack,
                 fontWeight: FontWeight.w600,
               ),
             ),

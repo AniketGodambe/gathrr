@@ -46,7 +46,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   length: 4,
                   obscureText: false,
                   animationType: AnimationType.fade,
-                  cursorColor: Colors.black,
+                  cursorColor: kblack,
                   keyboardType: TextInputType.number,
                   pinTheme: PinTheme(
                     shape: PinCodeFieldShape.box,

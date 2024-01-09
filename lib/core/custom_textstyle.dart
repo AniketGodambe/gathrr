@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gathrr/core/colors.dart';
 
-const TextStyle titleStyle = TextStyle(
-  color: Colors.black,
+TextStyle titleStyle = TextStyle(
+  color: kblack,
   fontSize: 24,
   fontWeight: FontWeight.w500,
 );

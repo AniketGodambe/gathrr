@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gathrr/core/colors.dart';
 import 'package:get/get.dart';
 
 class ErrorPopup extends StatelessWidget {
@@ -33,7 +34,7 @@ class ErrorPopup extends StatelessWidget {
               errorTitle,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.black,
+                color: kblack,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
@@ -43,7 +44,7 @@ class ErrorPopup extends StatelessWidget {
               errorMsg,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.grey,
+                color: secondaryTextColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
@@ -59,7 +60,7 @@ class ErrorPopup extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 decoration: ShapeDecoration(
-                  color: Colors.blue,
+                  color: primaButtonColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6)),
                 ),
@@ -72,7 +73,7 @@ class ErrorPopup extends StatelessWidget {
                       btnLabel == "" ? 'Retry' : btnLabel,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: kwhite,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),

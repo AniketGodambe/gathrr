@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/consts.dart';
 import 'package:gathrr/core/primary_button.dart';
 import 'package:gathrr/presentation/onboard/login_signup_screen.dart';
@@ -23,11 +24,11 @@ class SplashScreen extends StatelessWidget {
               height: 80,
             ),
           ),
-          const Text(
+          Text(
             'Gathrr: Where Events\nCome to Life, Effortlessly!',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.black,
+              color: kblack,
               fontSize: 24,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w400,

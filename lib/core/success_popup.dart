@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/primary_button.dart';
 
 class SuccessPopup extends StatelessWidget {
@@ -34,8 +35,8 @@ class SuccessPopup extends StatelessWidget {
             Text(
               successTitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: kblack,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
