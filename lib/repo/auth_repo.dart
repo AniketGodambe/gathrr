@@ -8,6 +8,7 @@ import 'package:gathrr/core/error_dialog.dart';
 import 'package:gathrr/presentation/events/event_list_screen.dart';
 import 'package:gathrr/presentation/onboard/otp_screen.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class AuthRepo {
@@ -34,6 +35,16 @@ class AuthRepo {
       }
     } catch (e) {
       log('sendOtp ::=> Error: $e');
+      showDialog(
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return const ErrorPopup(
+            errorMsg: "Something went wrong!",
+            errorTitle: 'Oops',
+            btnLabel: "Retry",
+          );
+        },
+      );
       return false;
     }
   }
@@ -50,6 +61,9 @@ class AuthRepo {
 
       if (jsonMap['status'] == true) {
         Get.offAll(() => const EventListPage());
+        final GetStorage storage = GetStorage();
+        storage.write('appState', "login");
+
         return true;
       } else {
         showDialog(
@@ -66,6 +80,16 @@ class AuthRepo {
       }
     } catch (e) {
       log('verifyOtp ::=> Error: $e');
+      showDialog(
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return const ErrorPopup(
+            errorMsg: "Something went wrong!",
+            errorTitle: 'Oops',
+            btnLabel: "Retry",
+          );
+        },
+      );
       return false;
     }
   }

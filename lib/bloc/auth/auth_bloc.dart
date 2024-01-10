@@ -17,14 +17,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ChangeObnoardModeEvent>(changeObnoardModeEvent);
     on<ResentOtpEvent>(resentOtpEvent);
     on<AuthVerifyOtpEvent>(authVerifyOtpEvent);
+    on<CheckboxChangedEvent>(checkboxChangedEvent);
   }
 
   FutureOr<void> authLoginEvent(
       AuthLoginEvent event, Emitter<AuthState> emit) async {
     emit(AuthLodingState());
-    if (event.isNavigation == false) {
-      emit(SentState());
-    }
+
     try {
       if (event.phone.isEmpty || event.phone.length < 10) {
         emit(AutEmptyPhoneState());
@@ -99,5 +98,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       emit(ResendState());
     }
+  }
+
+  FutureOr<void> checkboxChangedEvent(
+      CheckboxChangedEvent event, Emitter<AuthState> emit) async* {
+    print("isChecked ::=> ${event.isChecked}");
+    emit(CheckboxState(event.isChecked));
   }
 }

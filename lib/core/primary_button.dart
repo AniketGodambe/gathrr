@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gathrr/core/colors.dart';
+import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -22,13 +23,17 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(4),
-      onTap: isActive == true && isLoading == false ? onTap : () {},
+      onTap: isActive == true && isLoading == false
+          ? onTap
+          : () {
+              Get.back();
+            },
       child: Container(
         height: 50,
         decoration: BoxDecoration(
           color: isActive == false
               ? isWhiteColor
-                  ? kwhite
+                  ? Colors.grey.withOpacity(0.2)
                   : const Color(0xFFF3F3F3)
               : primaButtonColor,
           borderRadius: BorderRadius.circular(4),
@@ -50,7 +55,7 @@ class PrimaryButton extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 18,
-                      color: isActive == false ? Colors.grey : kwhite,
+                      color: isActive == false ? kblack : kwhite,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

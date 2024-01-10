@@ -2,12 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/security.dart';
-import 'package:gathrr/presentation/events/event_list_screen.dart';
 import 'package:gathrr/presentation/onboard/splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 void main() {
+  GetStorage.init().then((value) {});
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+
   runApp(const MyApp());
 }
 

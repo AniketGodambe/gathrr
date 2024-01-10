@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gathrr/bloc/event_list_bloc/events_bloc.dart';
+import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/consts.dart';
+import 'package:gathrr/core/success_popup.dart';
 import 'package:gathrr/presentation/events/widgets.dart';
+import 'package:gathrr/presentation/onboard/splash_screen.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -55,12 +60,29 @@ class _EventListPageState extends State<EventListPage> {
             ),
           ),
           kwidth20,
-          const Center(
-            child: SvgContainerWidget(
-              svgPath: 'assets/ic_notification.svg',
-              height: 25,
-              isColorRequired: false,
-              isBgRequired: false,
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                context: Get.context!,
+                builder: (BuildContext context) {
+                  return PermissionPopup(
+                    errorMsg: "you want to log out?",
+                    errorTitle: 'Are you sure',
+                    btnLabel1: 'No',
+                    btnLabel2: 'Yes',
+                    onTapbtn2: () {
+                      final GetStorage storage = GetStorage();
+                      storage.write("appState", null);
+                      Get.offAll(() => const SplashScreen());
+                    },
+                  );
+                },
+              );
+            },
+            child: const Icon(
+              Icons.logout,
+              color: kblack,
+              size: 25,
             ),
           ),
           kwidth20,

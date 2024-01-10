@@ -98,9 +98,10 @@ class EventListWidget extends StatelessWidget {
                         showDialog(
                           context: Get.context!,
                           builder: (BuildContext context) {
-                            return const ErrorPopup(
-                              errorMsg: "Stay tuned for updates!",
-                              errorTitle: 'Coming Soon',
+                            return ErrorPopup(
+                              errorMsg:
+                                  "No data for ${categoryList[index]['title'].toString()}",
+                              errorTitle: 'Oops',
                               btnLabel: "Okay",
                             );
                           },
@@ -152,35 +153,6 @@ class EventListWidget extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            // Container(
-                            //   width: 84,
-                            //   height: 84,
-                            //   decoration: ShapeDecoration(
-                            //     image: DecorationImage(
-                            //       image: NetworkImage(successState
-                            //           .eventList[index].eventBanner),
-                            //       fit: BoxFit.fill,
-                            //     ),
-                            //     shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(4)),
-                            //   ),
-                            // ),
-                            // Container(
-                            //   width: 84,
-                            //   height: 84,
-                            //   decoration: BoxDecoration(
-                            //     shape: BoxShape.rectangle,
-                            //     borderRadius: BorderRadius.circular(4),
-                            //   ),
-                            //   child: CachedNetworkImage(
-                            //     imageUrl:
-                            //         successState.eventList[index].eventBanner,
-                            //     fit: BoxFit.fill,
-                            //     placeholder: (context, url) => Container(),
-                            //     errorWidget: (context, url, error) =>
-                            //         Container(),
-                            //   ),
-                            // ),
                             CachedNetworkImage(
                                 useOldImageOnUrlChange: true,
                                 maxHeightDiskCache: 3000,
@@ -210,12 +182,11 @@ class EventListWidget extends StatelessWidget {
                                       ),
                                     ),
                                     child: Image.asset(
-                                      'Assets/images/influencer_profile_placeholder.png',
+                                      '',
                                       fit: BoxFit.cover,
                                       height: 84,
                                       width: 84,
                                     ))),
-
                             kwidth20,
                             Expanded(
                               child: Column(
@@ -258,7 +229,11 @@ class EventListWidget extends StatelessWidget {
                                   ),
                                   kheight5,
                                   Text(
-                                    successState.eventList[index].eventName,
+                                    successState.eventList[index].eventName ==
+                                            ""
+                                        ? "NA"
+                                        : successState
+                                            .eventList[index].eventName,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: const TextStyle(
@@ -277,7 +252,13 @@ class EventListWidget extends StatelessWidget {
                                       kwidth5,
                                       Expanded(
                                         child: Text(
-                                          "${successState.eventList[index].venue}, ${successState.eventList[index].location}",
+                                          successState.eventList[index].venue ==
+                                                      "" ||
+                                                  successState.eventList[index]
+                                                          .location ==
+                                                      ""
+                                              ? "NA"
+                                              : "${successState.eventList[index].venue}, ${successState.eventList[index].location}",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
@@ -299,7 +280,7 @@ class EventListWidget extends StatelessWidget {
                                       kwidth5,
                                       Expanded(
                                         child: Text(
-                                          'Booking limit - ${successState.eventList[index].bookingMaxLimit}',
+                                          'Booking limit - ${successState.eventList[index].bookingMaxLimit == "" ? "NA" : successState.eventList[index].bookingMaxLimit}',
                                           style: const TextStyle(
                                             color: Color(0xFF0D094D),
                                             fontSize: 12,

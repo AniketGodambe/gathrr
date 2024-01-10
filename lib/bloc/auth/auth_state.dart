@@ -28,3 +28,9 @@ class SignUpState extends AuthState {}
 class ResendState extends AuthState {}
 
 class SentState extends AuthState {}
+
+class CheckboxState extends LoginState {
+  final bool isChecked;
+
+  CheckboxState(this.isChecked);
+}

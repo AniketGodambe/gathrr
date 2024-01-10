@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gathrr/bloc/auth/auth_bloc.dart';
 import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/consts.dart';
-import 'package:gathrr/core/custom_textstyle.dart';
-import 'package:gathrr/core/primary_button.dart';
 import 'package:gathrr/core/text_field.dart';
+import 'package:gathrr/presentation/onboard/widgets.dart';
 
 class LoginSignUpScreen extends StatefulWidget {
   const LoginSignUpScreen({Key? key}) : super(key: key);
@@ -32,6 +31,13 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             buildWhen: (previous, current) => current is! AuthInitial,
             listener: (context, state) {},
             builder: (context, state) {
+              bool isChecked = false;
+
+              if (state is CheckboxState) {
+                isChecked = state.isChecked;
+              } else {
+                isChecked = false;
+              }
               return SingleChildScrollView(
                   child: SizedBox(
                 height: MediaQuery.of(context).size.height,
@@ -39,36 +45,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          kheight40,
-                          Center(
-                            child: Image.asset(
-                              "assets/obboard_gahtrr.png",
-                              height: 80,
-                            ),
-                          ),
-                          kheight40,
-                          kheight20,
-                          Text(
-                            state.runtimeType == LoginState
-                                ? "Join Gathrr"
-                                : 'Login to Gathrr',
-                            style: titleStyle.copyWith(fontSize: 30),
-                          ),
-                          kheight20,
-                          Text(
-                            state.runtimeType == LoginState
-                                ? 'Join Gathrr to attend events network with the people from your industry.'
-                                : 'Gathrr is the go-to app to attend events and network with people from your industry.',
-                            style: subtitleStyle,
-                          ),
-                        ],
-                      ),
-                    ),
+                    ContentWidget(state: state),
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -96,91 +73,18 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             ),
                           ),
                           kheight20,
-                          CustomInputField(
-                            textController: phoneController,
-                            hintText: 'Please enter your phone number',
-                            onChanged: (val) {},
-                            title: '',
-                            textInputType: TextInputType.number,
-                            maxLength: 10,
-                            readOnly: false,
-                            validator: (val) {
-                              if (state.runtimeType == AutEmptyPhoneState) {
-                                return "Enter phone";
-                              }
-                              return null;
-                            },
+                          phoneInputField(state),
+                          kheight40,
+                          TermsAndCondtionsTextWidget(isChecked: isChecked),
+                          kheight40,
+                          LoginButtonWidget(
+                            state: state,
+                            authBloc: authBloc,
+                            phone: phoneController.text,
                           ),
                           kheight40,
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'By proceeding you agree to our ',
-                                  style: subtitleStyle.copyWith(fontSize: 16),
-                                ),
-                                const TextSpan(
-                                    text: 'Terms',
-                                    style: loginregistertextStyle),
-                                TextSpan(
-                                  text: ' & ',
-                                  style: subtitleStyle.copyWith(fontSize: 16),
-                                ),
-                                const TextSpan(
-                                    text: 'Conditions',
-                                    style: loginregistertextStyle),
-                                TextSpan(
-                                  text: ' ',
-                                  style: subtitleStyle.copyWith(fontSize: 16),
-                                ),
-                                const TextSpan(
-                                    text: 'Privacy Policies',
-                                    style: loginregistertextStyle),
-                              ],
-                            ),
-                          ),
-                          kheight40,
-                          PrimaryButton(
-                            isLoading: state.runtimeType == AuthLodingState,
-                            onTap: () {
-                              authBloc.add(AuthLoginEvent(
-                                  phone: phoneController.text,
-                                  isNavigation: true));
-                            },
-                            title: "Login",
-                          ),
-                          kheight40,
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                state.runtimeType == LoginState
-                                    ? "Already have an account? "
-                                    : "New to gathrr? ",
-                                style: subtitleStyle.copyWith(fontSize: 20),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  if (state.runtimeType == LoginState) {
-                                    authBloc.add(const ChangeObnoardModeEvent(
-                                      mode: 'register',
-                                    ));
-                                  } else {
-                                    authBloc.add(const ChangeObnoardModeEvent(
-                                        mode: 'login'));
-                                  }
-                                },
-                                child: Text(
-                                  state.runtimeType == LoginState
-                                      ? "login"
-                                      : 'Register',
-                                  style: loginregistertextStyle.copyWith(
-                                      fontSize: 20),
-                                ),
-                              )
-                            ],
-                          ),
+                          LoginRegistedSwitchWidget(
+                              state: state, authBloc: authBloc),
                           kheight40,
                           kheight20,
                         ],
@@ -190,5 +94,23 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                 ),
               ));
             }));
+  }
+
+  CustomInputField phoneInputField(AuthState state) {
+    return CustomInputField(
+      textController: phoneController,
+      hintText: 'Please enter your phone number',
+      onChanged: (val) {},
+      title: '',
+      textInputType: TextInputType.number,
+      maxLength: 10,
+      readOnly: false,
+      validator: (val) {
+        if (state.runtimeType == AutEmptyPhoneState) {
+          return "Enter phone";
+        }
+        return null;
+      },
+    );
   }
 }

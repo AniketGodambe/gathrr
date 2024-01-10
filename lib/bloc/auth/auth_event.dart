@@ -32,3 +32,9 @@ class ResentOtpEvent extends AuthEvent {
 
   const ResentOtpEvent({required this.status});
 }
+
+class CheckboxChangedEvent extends AuthEvent {
+  final bool isChecked;
+
+  const CheckboxChangedEvent(this.isChecked);
+}
