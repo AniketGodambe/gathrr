@@ -6,7 +6,7 @@ import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/consts.dart';
 import 'package:gathrr/core/error_dialog.dart';
 import 'package:gathrr/core/primary_button.dart';
-import 'package:gathrr/presentation/events/widgets.dart';
+import 'package:gathrr/view/events/widgets.dart';
 import 'package:get/get.dart';
 
 class EventInfoScreen extends StatefulWidget {

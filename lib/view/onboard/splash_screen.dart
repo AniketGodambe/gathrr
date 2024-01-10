@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/consts.dart';
 import 'package:gathrr/core/primary_button.dart';
-import 'package:gathrr/presentation/events/event_list_screen.dart';
-import 'package:gathrr/presentation/onboard/login_signup_screen.dart';
+import 'package:gathrr/view/events/event_list_screen.dart';
+import 'package:gathrr/view/onboard/login_signup_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 

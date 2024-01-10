@@ -5,7 +5,7 @@ import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/consts.dart';
 import 'package:gathrr/core/custom_textstyle.dart';
 import 'package:gathrr/core/primary_button.dart';
-import 'package:gathrr/presentation/onboard/widgets.dart';
+import 'package:gathrr/view/onboard/widgets.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phone;

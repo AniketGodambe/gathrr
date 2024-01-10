@@ -5,7 +5,7 @@ import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/consts.dart';
 import 'package:gathrr/core/primary_button.dart';
 import 'package:gathrr/core/text_field.dart';
-import 'package:gathrr/presentation/onboard/widgets.dart';
+import 'package:gathrr/view/onboard/widgets.dart';
 
 class LoginSignUpScreen extends StatefulWidget {
   const LoginSignUpScreen({Key? key}) : super(key: key);
