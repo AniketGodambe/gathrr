@@ -82,348 +82,358 @@ class EventListWidget extends StatelessWidget {
             ),
           ),
           kheight20,
-          SizedBox(
-            height: 32,
-            child: ListView.builder(
-              itemCount: categoryList.length,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    if (categoryList[index]['isSelected'] == false) {
-                      showDialog(
-                        context: Get.context!,
-                        builder: (BuildContext context) {
-                          return ErrorPopup(
-                            errorMsg:
-                                "No data for ${categoryList[index]['title'].toString()}",
-                            errorTitle: 'Oops',
-                            btnLabel: "Okay",
-                          );
-                        },
-                      );
-                    }
-                  },
-                  child: CategoryContainerWidget(
-                    title: categoryList[index]['title'].toString(),
-                    isSelected: categoryList[index]['isSelected'] as bool,
-                  ),
-                );
-              },
-            ),
+          CategoryCardWidget(
+            categoryList: categoryList,
           ),
-          Container(
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-            width: Get.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              image: const DecorationImage(
-                image: AssetImage("assets/card_bg.png"),
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          carouselCard(),
+          eventListWidget(),
+        ],
+      ),
+    );
+  }
+
+  ListView eventListWidget() {
+    return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 10);
+      },
+      padding: const EdgeInsets.all(16),
+      shrinkWrap: true,
+      itemCount: successState.eventList.length,
+      itemBuilder: (context, index) {
+        return Stack(
+          children: [
+            ListAnimationWidget(
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(() => EventInfoScreen(
+                        eventId: successState.eventList[index].id,
+                      ));
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: ShapeDecoration(
+                    color: kwhite,
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(
+                          width: 0.60, color: Color(0xFFE3DDDD)),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x33000000),
+                        blurRadius: 1,
+                        offset: Offset(0, 1),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Row(
                     children: [
-                      kheight10,
-                      const Text(
-                        '91SPRINGBOARD',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: CachedNetworkImage(
+                            useOldImageOnUrlChange: true,
+                            maxHeightDiskCache: 3000,
+                            maxWidthDiskCache: 3000,
+                            imageUrl: successState.eventList[index].eventBanner,
+                            imageBuilder: (context, imageProvider) {
+                              return Image(
+                                image: imageProvider,
+                                fit: BoxFit.fill,
+                                height: 84,
+                                width: 84,
+                              );
+                            },
+                            progressIndicatorBuilder: (context, url, progress) {
+                              return Container(
+                                height: 84,
+                                width: 84,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: kwhite,
+                                  border: Border.all(
+                                    color: borderColor,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                ),
+                              );
+                            },
+                            errorWidget: (context, url, error) => Container(
+                                  height: 84,
+                                  width: 84,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: kwhite,
+                                    border: Border.all(
+                                      color: borderColor,
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.error,
+                                    color: primaButtonColor,
+                                  ),
+                                )),
                       ),
-                      kheight5,
-                      const Text(
-                        'STARTUP OPEN HOUSE',
-                        style: TextStyle(
-                          color: Color(0xFFF8773C),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
+                      kwidth20,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/ic_calendar.svg",
+                                  height: 15,
+                                ),
+                                kwidth5,
+                                Text(
+                                  '${formatDate(format: 'dd', date: DateTime.parse(successState.eventList[index].startDate))} - ${formatDate(format: 'dd MMM', date: DateTime.parse(successState.eventList[index].endDate))}',
+                                  style: const TextStyle(
+                                    color: Color(0xFF0D094D),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                const Spacer(),
+                                SvgPicture.asset(
+                                  "assets/ic_time.svg",
+                                  height: 15,
+                                ),
+                                kwidth5,
+                                Text(
+                                  '${formatDate(format: 'hh:mm', date: DateTime.parse(successState.eventList[index].startDate))} - ${formatDate(format: 'hh:mm a', date: DateTime.parse(successState.eventList[index].endDate))}',
+                                  style: const TextStyle(
+                                    color: Color(0xFF0D094D),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                              ],
+                            ),
+                            kheight5,
+                            Text(
+                              successState.eventList[index].eventName == ""
+                                  ? "NA"
+                                  : successState.eventList[index].eventName,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                color: kblack,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            kheight5,
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/ic_map_pin.svg",
+                                  height: 15,
+                                ),
+                                kwidth5,
+                                Expanded(
+                                  child: Text(
+                                    successState.eventList[index].venue == "" ||
+                                            successState.eventList[index]
+                                                    .location ==
+                                                ""
+                                        ? "NA"
+                                        : "${successState.eventList[index].venue}, ${successState.eventList[index].location}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Color(0xFF0E0A4E),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            kheight10,
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/ic_team_line.svg",
+                                  height: 15,
+                                ),
+                                kwidth5,
+                                Expanded(
+                                  child: Text(
+                                    'Booking limit - ${successState.eventList[index].bookingMaxLimit == "" ? "NA" : successState.eventList[index].bookingMaxLimit}',
+                                    style: const TextStyle(
+                                      color: Color(0xFF0D094D),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
                         ),
-                      ),
-                      kheight5,
-                      const Text(
-                        '11th August 2023 | 6:00PM',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      kheight5,
-                      const Text(
-                        '91springboard, Pune',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      kheight5,
-                      const Text(
-                        'Terms & Conditions Apply*',
-                        style: TextStyle(
-                          color: Color(0xFF8C8C8C),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      kheight5,
+                      )
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Image.asset(
-                      "assets/qr_img.png",
-                      height: 120,
-                    ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                alignment: Alignment.center,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: successState.eventList[index].generalInfo == "Free"
+                      ? const Color(0xffF9E048)
+                      : const Color(0xffFFA500),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      bottomRight: Radius.circular(4)),
+                ),
+                child: Text(
+                  successState.eventList[index].generalInfo,
+                  style: const TextStyle(
+                    color: Color(0xFF0E0A4E),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
                   ),
-                )
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Container carouselCard() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      width: Get.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        image: const DecorationImage(
+          image: AssetImage("assets/card_bg.png"),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                kheight10,
+                const Text(
+                  '91SPRINGBOARD',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                kheight5,
+                const Text(
+                  'STARTUP OPEN HOUSE',
+                  style: TextStyle(
+                    color: Color(0xFFF8773C),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                kheight5,
+                const Text(
+                  '11th August 2023 | 6:00PM',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                kheight5,
+                const Text(
+                  '91springboard, Pune',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                kheight5,
+                const Text(
+                  'Terms & Conditions Apply*',
+                  style: TextStyle(
+                    color: Color(0xFF8C8C8C),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                kheight5,
               ],
             ),
           ),
-          ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 10);
-            },
-            padding: const EdgeInsets.all(16),
-            shrinkWrap: true,
-            itemCount: successState.eventList.length,
-            itemBuilder: (context, index) {
-              return Stack(
-                children: [
-                  ListAnimationWidget(
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.to(() => EventInfoScreen(
-                              eventId: successState.eventList[index].id,
-                            ));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: ShapeDecoration(
-                          color: kwhite,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 0.60, color: Color(0xFFE3DDDD)),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          shadows: const [
-                            BoxShadow(
-                              color: Color(0x33000000),
-                              blurRadius: 1,
-                              offset: Offset(0, 1),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: CachedNetworkImage(
-                                  useOldImageOnUrlChange: true,
-                                  maxHeightDiskCache: 3000,
-                                  maxWidthDiskCache: 3000,
-                                  imageUrl:
-                                      successState.eventList[index].eventBanner,
-                                  imageBuilder: (context, imageProvider) {
-                                    return Image(
-                                      image: imageProvider,
-                                      fit: BoxFit.fill,
-                                      height: 84,
-                                      width: 84,
-                                    );
-                                  },
-                                  progressIndicatorBuilder:
-                                      (context, url, progress) {
-                                    return Container(
-                                      height: 84,
-                                      width: 84,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: kwhite,
-                                        border: Border.all(
-                                          color: borderColor,
-                                        ),
-                                      ),
-                                      child: const Center(
-                                        child: CircularProgressIndicator
-                                            .adaptive(),
-                                      ),
-                                    );
-                                  },
-                                  errorWidget: (context, url, error) =>
-                                      Container(
-                                        height: 84,
-                                        width: 84,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: kwhite,
-                                          border: Border.all(
-                                            color: borderColor,
-                                          ),
-                                        ),
-                                        child: const Icon(
-                                          Icons.error,
-                                          color: primaButtonColor,
-                                        ),
-                                      )),
-                            ),
-                            kwidth20,
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/ic_calendar.svg",
-                                        height: 15,
-                                      ),
-                                      kwidth5,
-                                      Text(
-                                        '${formatDate(format: 'dd', date: DateTime.parse(successState.eventList[index].startDate))} - ${formatDate(format: 'dd MMM', date: DateTime.parse(successState.eventList[index].endDate))}',
-                                        style: const TextStyle(
-                                          color: Color(0xFF0D094D),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      SvgPicture.asset(
-                                        "assets/ic_time.svg",
-                                        height: 15,
-                                      ),
-                                      kwidth5,
-                                      Text(
-                                        '${formatDate(format: 'hh:mm', date: DateTime.parse(successState.eventList[index].startDate))} - ${formatDate(format: 'hh:mm a', date: DateTime.parse(successState.eventList[index].endDate))}',
-                                        style: const TextStyle(
-                                          color: Color(0xFF0D094D),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  kheight5,
-                                  Text(
-                                    successState.eventList[index].eventName ==
-                                            ""
-                                        ? "NA"
-                                        : successState
-                                            .eventList[index].eventName,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                      color: kblack,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  kheight5,
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/ic_map_pin.svg",
-                                        height: 15,
-                                      ),
-                                      kwidth5,
-                                      Expanded(
-                                        child: Text(
-                                          successState.eventList[index].venue ==
-                                                      "" ||
-                                                  successState.eventList[index]
-                                                          .location ==
-                                                      ""
-                                              ? "NA"
-                                              : "${successState.eventList[index].venue}, ${successState.eventList[index].location}",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            color: Color(0xFF0E0A4E),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  kheight10,
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/ic_team_line.svg",
-                                        height: 15,
-                                      ),
-                                      kwidth5,
-                                      Expanded(
-                                        child: Text(
-                                          'Booking limit - ${successState.eventList[index].bookingMaxLimit == "" ? "NA" : successState.eventList[index].bookingMaxLimit}',
-                                          style: const TextStyle(
-                                            color: Color(0xFF0D094D),
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color:
-                            successState.eventList[index].generalInfo == "Free"
-                                ? const Color(0xffF9E048)
-                                : const Color(0xffFFA500),
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(4),
-                            bottomRight: Radius.circular(4)),
-                      ),
-                      child: Text(
-                        successState.eventList[index].generalInfo,
-                        style: const TextStyle(
-                          color: Color(0xFF0E0A4E),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              );
-            },
-          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Image.asset(
+                "assets/qr_img.png",
+                height: 120,
+              ),
+            ),
+          )
         ],
+      ),
+    );
+  }
+}
+
+class CategoryCardWidget extends StatelessWidget {
+  final List<Map<String, Object>> categoryList;
+  const CategoryCardWidget({super.key, required this.categoryList});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 32,
+      child: ListView.builder(
+        itemCount: categoryList.length,
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              if (categoryList[index]['isSelected'] == false) {
+                showDialog(
+                  context: Get.context!,
+                  builder: (BuildContext context) {
+                    return ErrorPopup(
+                      errorMsg:
+                          "No data for ${categoryList[index]['title'].toString()}",
+                      errorTitle: 'Oops',
+                      btnLabel: "Okay",
+                    );
+                  },
+                );
+              }
+            },
+            child: CategoryContainerWidget(
+              title: categoryList[index]['title'].toString(),
+              isSelected: categoryList[index]['isSelected'] as bool,
+            ),
+          );
+        },
       ),
     );
   }
