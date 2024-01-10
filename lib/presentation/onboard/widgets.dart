@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gathrr/bloc/auth/auth_bloc.dart';
 import 'package:gathrr/core/consts.dart';
 import 'package:gathrr/core/custom_textstyle.dart';
-import 'package:gathrr/core/primary_button.dart';
 import 'package:gathrr/core/colors.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -54,10 +52,11 @@ class TermsAndCondtionsTextWidget extends StatelessWidget {
     return Row(
       children: [
         Checkbox(
-          value: isChecked,
-          activeColor: Colors.green,
+          value: true,
+          activeColor: const Color(0xffCCE5FF),
+          checkColor: primaButtonColor,
           onChanged: (newValue) {
-            context.read<AuthBloc>().add(CheckboxChangedEvent(newValue!));
+            // context.read<AuthBloc>().add(CheckboxChangedEvent(newValue!));
           },
         ),
         Expanded(
@@ -86,28 +85,6 @@ class TermsAndCondtionsTextWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class LoginButtonWidget extends StatelessWidget {
-  final AuthState state;
-  final AuthBloc authBloc;
-  final String phone;
-  const LoginButtonWidget(
-      {super.key,
-      required this.state,
-      required this.authBloc,
-      required this.phone});
-
-  @override
-  Widget build(BuildContext context) {
-    return PrimaryButton(
-      isLoading: state.runtimeType == AuthLodingState,
-      onTap: () {
-        authBloc.add(AuthLoginEvent(phone: phone, isNavigation: true));
-      },
-      title: "Login",
     );
   }
 }

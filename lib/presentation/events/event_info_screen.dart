@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gathrr/bloc/event_id_bloc/event_id_bloc_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:gathrr/core/consts.dart';
 import 'package:gathrr/core/error_dialog.dart';
 import 'package:gathrr/core/primary_button.dart';
 import 'package:gathrr/presentation/events/widgets.dart';
+import 'package:get/get.dart';
 
 class EventInfoScreen extends StatefulWidget {
   final String eventId;
@@ -123,17 +125,64 @@ class _EventInfoScreenState extends State<EventInfoScreen> {
     );
   }
 
-  Container imageWidget(EventIdFetchSuccessState successState) {
-    return Container(
-      height: 272,
-      decoration: ShapeDecoration(
-        image: DecorationImage(
-          image: NetworkImage(successState.eventByIdModel.eventBanner),
-          fit: BoxFit.fill,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
+  ClipRRect imageWidget(EventIdFetchSuccessState successState) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: CachedNetworkImage(
+          useOldImageOnUrlChange: true,
+          maxHeightDiskCache: 3000,
+          maxWidthDiskCache: 3000,
+          imageUrl: successState.eventByIdModel.eventBanner,
+          imageBuilder: (context, imageProvider) {
+            return Image(
+              image: imageProvider,
+              fit: BoxFit.fill,
+              height: 272,
+              width: Get.width,
+            );
+          },
+          progressIndicatorBuilder: (context, url, progress) {
+            return Container(
+              height: 272,
+              width: Get.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: kwhite,
+                border: Border.all(
+                  color: borderColor,
+                ),
+              ),
+              child: const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            );
+          },
+          errorWidget: (context, url, error) => Container(
+                height: 272,
+                width: Get.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: kwhite,
+                  border: Border.all(
+                    color: borderColor,
+                  ),
+                ),
+                child: const Icon(
+                  Icons.error,
+                  color: primaButtonColor,
+                ),
+              )),
     );
+    // Container(
+    //   height: 272,
+    //   decoration: ShapeDecoration(
+    //     image: DecorationImage(
+    //       image: NetworkImage(successState.eventByIdModel.eventBanner),
+    //       fit: BoxFit.fill,
+    //     ),
+    //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    //   ),
+    // );
   }
 
   List<Widget> actionsWidget(BuildContext context) {

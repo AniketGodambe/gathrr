@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gathrr/bloc/auth/auth_bloc.dart';
 import 'package:gathrr/core/colors.dart';
 import 'package:gathrr/core/consts.dart';
+import 'package:gathrr/core/primary_button.dart';
 import 'package:gathrr/core/text_field.dart';
 import 'package:gathrr/presentation/onboard/widgets.dart';
 
@@ -77,10 +78,14 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                           kheight40,
                           TermsAndCondtionsTextWidget(isChecked: isChecked),
                           kheight40,
-                          LoginButtonWidget(
-                            state: state,
-                            authBloc: authBloc,
-                            phone: phoneController.text,
+                          PrimaryButton(
+                            isLoading: state.runtimeType == AuthLodingState,
+                            onTap: () {
+                              authBloc.add(AuthLoginEvent(
+                                  phone: phoneController.text,
+                                  isNavigation: true));
+                            },
+                            title: "Login",
                           ),
                           kheight40,
                           LoginRegistedSwitchWidget(

@@ -31,84 +31,98 @@ class _EventListPageState extends State<EventListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF9F9F9),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffF9F9F9),
-        toolbarHeight: 70,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(formatDate(format: 'EEEE, dd MMMM')),
-            const Text(
-              'Kalyani Nagar Pune, MH IN',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Lato',
-                fontWeight: FontWeight.w400,
-                height: 0,
-              ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: kwhite,
+            floating: false,
+            pinned: true,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(formatDate(format: 'EEEE, dd MMMM')),
+                const Text(
+                  'Kalyani Nagar Pune, MH IN',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        actions: [
-          const Center(
-            child: SvgContainerWidget(
-              svgPath: 'assets/ic_search.svg',
-              height: 25,
-              isColorRequired: false,
-              isBgRequired: false,
+            actions: actionsWidget(),
+          ),
+          SliverListWidget(
+            child: BlocConsumer<EventsBloc, EventsState>(
+              bloc: eventListBloc,
+              listenWhen: (previous, current) =>
+                  current is EventlistActionState,
+              buildWhen: (previous, current) =>
+                  current is! EventlistActionState,
+              listener: (context, state) {},
+              builder: (context, state) {
+                switch (state.runtimeType) {
+                  case EventListFetchSuccessState:
+                    final successState = state as EventListFetchSuccessState;
+                    return EventListWidget(successState: successState);
+                  case EventListLoadingState:
+                    return const Center(child: CircularProgressIndicator());
+                  case EventListErrorState:
+                    return const Center(
+                        child: Text("Oppss There is an issue "));
+                  default:
+                    return const SizedBox();
+                }
+              },
             ),
           ),
-          kwidth20,
-          GestureDetector(
-            onTap: () {
-              showDialog(
-                context: Get.context!,
-                builder: (BuildContext context) {
-                  return PermissionPopup(
-                    errorMsg: "you want to log out?",
-                    errorTitle: 'Are you sure',
-                    btnLabel1: 'No',
-                    btnLabel2: 'Yes',
-                    onTapbtn2: () {
-                      final GetStorage storage = GetStorage();
-                      storage.write("appState", null);
-                      Get.offAll(() => const SplashScreen());
-                    },
-                  );
-                },
-              );
-            },
-            child: const Icon(
-              Icons.logout,
-              color: kblack,
-              size: 25,
-            ),
-          ),
-          kwidth20,
         ],
-      ),
-      body: BlocConsumer<EventsBloc, EventsState>(
-        bloc: eventListBloc,
-        listenWhen: (previous, current) => current is EventlistActionState,
-        buildWhen: (previous, current) => current is! EventlistActionState,
-        listener: (context, state) {},
-        builder: (context, state) {
-          switch (state.runtimeType) {
-            case EventListFetchSuccessState:
-              final successState = state as EventListFetchSuccessState;
-              return EventListWidget(successState: successState);
-            case EventListLoadingState:
-              return const Center(child: CircularProgressIndicator());
-            case EventListErrorState:
-              return const Center(child: Text("Oppss There is an issue "));
-            default:
-              return const SizedBox();
-          }
-        },
       ),
     );
   }
+}
+
+actionsWidget() {
+  return [
+    const Center(
+      child: SvgContainerWidget(
+        svgPath: 'assets/ic_search.svg',
+        height: 25,
+        isColorRequired: false,
+        isBgRequired: false,
+      ),
+    ),
+    kwidth20,
+    GestureDetector(
+      onTap: () {
+        showDialog(
+          context: Get.context!,
+          builder: (BuildContext context) {
+            return PermissionPopup(
+              errorMsg: "you want to log out?",
+              errorTitle: 'Are you sure',
+              btnLabel1: 'No',
+              btnLabel2: 'Yes',
+              onTapbtn2: () {
+                final GetStorage storage = GetStorage();
+                storage.write("appState", null);
+                Get.offAll(() => const SplashScreen());
+              },
+            );
+          },
+        );
+      },
+      child: const Icon(
+        Icons.logout,
+        color: kblack,
+        size: 25,
+      ),
+    ),
+    kwidth20,
+  ];
 }
 
 String formatDate({
@@ -136,5 +150,17 @@ Future<void> launchUrlFN(url) async {
     }
   } catch (e) {
     print(e);
+  }
+}
+
+class SliverListWidget extends StatelessWidget {
+  final Widget child;
+  const SliverListWidget({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildListDelegate(<Widget>[child]),
+    );
   }
 }

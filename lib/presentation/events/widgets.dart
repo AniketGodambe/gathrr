@@ -69,7 +69,7 @@ class EventListWidget extends StatelessWidget {
               thickness: 2,
             ),
           ),
-          kheight20,
+          kheight10,
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
@@ -153,40 +153,58 @@ class EventListWidget extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            CachedNetworkImage(
-                                useOldImageOnUrlChange: true,
-                                maxHeightDiskCache: 3000,
-                                maxWidthDiskCache: 3000,
-                                imageUrl:
-                                    successState.eventList[index].eventBanner,
-                                imageBuilder: (context, imageProvider) {
-                                  return Image(
-                                    image: imageProvider,
-                                    fit: BoxFit.fill,
-                                    height: 84,
-                                    width: 84,
-                                  );
-                                },
-                                progressIndicatorBuilder:
-                                    (context, url, progress) {
-                                  return const SizedBox();
-                                },
-                                errorWidget: (context, url, error) => Container(
-                                    padding: const EdgeInsets.all(8),
-                                    height: 84,
-                                    width: 84,
-                                    decoration: BoxDecoration(
-                                      color: kwhite,
-                                      border: Border.all(
-                                        color: borderColor,
-                                      ),
-                                    ),
-                                    child: Image.asset(
-                                      '',
-                                      fit: BoxFit.cover,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: CachedNetworkImage(
+                                  useOldImageOnUrlChange: true,
+                                  maxHeightDiskCache: 3000,
+                                  maxWidthDiskCache: 3000,
+                                  imageUrl:
+                                      successState.eventList[index].eventBanner,
+                                  imageBuilder: (context, imageProvider) {
+                                    return Image(
+                                      image: imageProvider,
+                                      fit: BoxFit.fill,
                                       height: 84,
                                       width: 84,
-                                    ))),
+                                    );
+                                  },
+                                  progressIndicatorBuilder:
+                                      (context, url, progress) {
+                                    return Container(
+                                      height: 84,
+                                      width: 84,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: kwhite,
+                                        border: Border.all(
+                                          color: borderColor,
+                                        ),
+                                      ),
+                                      child: const Center(
+                                        child: CircularProgressIndicator
+                                            .adaptive(),
+                                      ),
+                                    );
+                                  },
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                        height: 84,
+                                        width: 84,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: kwhite,
+                                          border: Border.all(
+                                            color: borderColor,
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.error,
+                                          color: primaButtonColor,
+                                        ),
+                                      )),
+                            ),
                             kwidth20,
                             Expanded(
                               child: Column(
