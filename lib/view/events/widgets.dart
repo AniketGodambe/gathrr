@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gathrr/bloc/event_list_bloc/events_bloc.dart';
@@ -85,7 +86,7 @@ class EventListWidget extends StatelessWidget {
           CategoryCardWidget(
             categoryList: categoryList,
           ),
-          carouselCard(),
+          CarouselCardWidget(),
           eventListWidget(),
         ],
       ),
@@ -315,83 +316,127 @@ class EventListWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  Container carouselCard() {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-      width: Get.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        image: const DecorationImage(
-          image: AssetImage("assets/card_bg.png"),
-          fit: BoxFit.fill,
-        ),
-      ),
-      child: Row(
+class CarouselCardWidget extends StatelessWidget {
+  CarouselCardWidget({super.key});
+
+  RxInt currentSlide = 0.obs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Column(
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                kheight10,
-                const Text(
-                  '91SPRINGBOARD',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                kheight5,
-                const Text(
-                  'STARTUP OPEN HOUSE',
-                  style: TextStyle(
-                    color: Color(0xFFF8773C),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                kheight5,
-                const Text(
-                  '11th August 2023 | 6:00PM',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                kheight5,
-                const Text(
-                  '91springboard, Pune',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                kheight5,
-                const Text(
-                  'Terms & Conditions Apply*',
-                  style: TextStyle(
-                    color: Color(0xFF8C8C8C),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                kheight5,
-              ],
+          CarouselSlider(
+            options: CarouselOptions(
+              height: 180,
+              viewportFraction: 1,
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 6),
+              onPageChanged: (index, reason) {
+                currentSlide.value = index;
+              },
             ),
+            items: List.generate(3, (index) {
+              return Container(
+                margin: const EdgeInsets.all(16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                width: Get.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: const DecorationImage(
+                    image: AssetImage("assets/card_bg.png"),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          kheight10,
+                          const Text(
+                            '91SPRINGBOARD',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          kheight5,
+                          const Text(
+                            'STARTUP OPEN HOUSE',
+                            style: TextStyle(
+                              color: Color(0xFFF8773C),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          kheight5,
+                          const Text(
+                            '11th August 2023 | 6:00PM',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          kheight5,
+                          const Text(
+                            '91springboard, Pune',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          kheight5,
+                          const Text(
+                            'Terms & Conditions Apply*',
+                            style: TextStyle(
+                              color: Color(0xFF8C8C8C),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          kheight5,
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Image.asset(
+                          "assets/qr_img.png",
+                          height: 120,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Image.asset(
-                "assets/qr_img.png",
-                height: 120,
-              ),
-            ),
-          )
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(3, (index) {
+              return Container(
+                padding: EdgeInsets.zero,
+                width: currentSlide.value == index ? 24 : 12,
+                height: 12,
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(300),
+                    // shape: BoxShape.circle,
+                    color: currentSlide.value == index
+                        ? kblack.withOpacity(0.8)
+                        : kblack.withOpacity(0.3)),
+              );
+            }),
+          ),
         ],
       ),
     );
