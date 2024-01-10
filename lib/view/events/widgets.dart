@@ -77,44 +77,121 @@ class EventListWidget extends StatelessWidget {
               style: TextStyle(
                 color: Color(0xFF001833),
                 fontSize: 16,
-                fontFamily: 'Lato',
                 fontWeight: FontWeight.w700,
-                height: 0,
               ),
             ),
           ),
           kheight20,
           SizedBox(
-              height: 32,
-              child: ListView.builder(
-                itemCount: categoryList.length,
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (categoryList[index]['isSelected'] == false) {
-                        showDialog(
-                          context: Get.context!,
-                          builder: (BuildContext context) {
-                            return ErrorPopup(
-                              errorMsg:
-                                  "No data for ${categoryList[index]['title'].toString()}",
-                              errorTitle: 'Oops',
-                              btnLabel: "Okay",
-                            );
-                          },
-                        );
-                      }
-                    },
-                    child: CategoryContainerWidget(
-                      title: categoryList[index]['title'].toString(),
-                      isSelected: categoryList[index]['isSelected'] as bool,
+            height: 32,
+            child: ListView.builder(
+              itemCount: categoryList.length,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    if (categoryList[index]['isSelected'] == false) {
+                      showDialog(
+                        context: Get.context!,
+                        builder: (BuildContext context) {
+                          return ErrorPopup(
+                            errorMsg:
+                                "No data for ${categoryList[index]['title'].toString()}",
+                            errorTitle: 'Oops',
+                            btnLabel: "Okay",
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: CategoryContainerWidget(
+                    title: categoryList[index]['title'].toString(),
+                    isSelected: categoryList[index]['isSelected'] as bool,
+                  ),
+                );
+              },
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+            width: Get.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              image: const DecorationImage(
+                image: AssetImage("assets/card_bg.png"),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      kheight10,
+                      const Text(
+                        '91SPRINGBOARD',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      kheight5,
+                      const Text(
+                        'STARTUP OPEN HOUSE',
+                        style: TextStyle(
+                          color: Color(0xFFF8773C),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      kheight5,
+                      const Text(
+                        '11th August 2023 | 6:00PM',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      kheight5,
+                      const Text(
+                        '91springboard, Pune',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      kheight5,
+                      const Text(
+                        'Terms & Conditions Apply*',
+                        style: TextStyle(
+                          color: Color(0xFF8C8C8C),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      kheight5,
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Image.asset(
+                      "assets/qr_img.png",
+                      height: 120,
                     ),
-                  );
-                },
-              )),
+                  ),
+                )
+              ],
+            ),
+          ),
           ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             separatorBuilder: (context, index) {
