@@ -10,15 +10,16 @@ Gathrr is a Flutter app designed to streamline event management and participatio
 ## Prerequisites
 Make sure you have Flutter and Dart installed on your machine. If not, you can follow the [official Flutter installation guide](https://flutter.dev/docs/get-started/install).
 
-## Clone the Repository
-```bash
-git clone [repository_url]
-cd gathrr
+## Repository URL
+https://github.com/AniketGodambe/gathrr
 
 # Install Dependencies
 flutter pub get
 
-#for build apk for android 
+# for build apk for android 
+flutter build apk
+
+# for build apk for iOS 
 flutter build apk
 
 
