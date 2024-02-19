@@ -13,13 +13,13 @@ Make sure you have Flutter and Dart installed on your machine. If not, you can f
 ## Repository URL
 https://github.com/AniketGodambe/gathrr
 
-# Install Dependencies
+## Install Dependencies
 flutter pub get
 
-# build apk for android 
+## build apk for android 
 flutter build apk
 
-# for build apk for iOS 
+## for build apk for iOS 
 flutter build apk
 
 
