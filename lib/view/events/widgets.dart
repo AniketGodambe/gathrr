@@ -86,7 +86,7 @@ class EventListWidget extends StatelessWidget {
           CategoryCardWidget(
             categoryList: categoryList,
           ),
-          CarouselCardWidget(),
+          const CarouselCardWidget(),
           eventListWidget(),
         ],
       ),
@@ -319,12 +319,12 @@ class EventListWidget extends StatelessWidget {
 }
 
 class CarouselCardWidget extends StatelessWidget {
-  CarouselCardWidget({super.key});
-
-  RxInt currentSlide = 0.obs;
+  const CarouselCardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    RxInt currentSlide = 0.obs;
+
     return Obx(
       () => Column(
         children: [
@@ -425,8 +425,8 @@ class CarouselCardWidget extends StatelessWidget {
             children: List.generate(3, (index) {
               return Container(
                 padding: EdgeInsets.zero,
-                width: currentSlide.value == index ? 24 : 12,
-                height: 12,
+                width: currentSlide.value == index ? 16 : 8,
+                height: 8,
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(300),

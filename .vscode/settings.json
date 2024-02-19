@@ -1,6 +1,4 @@
 {
-    "dart.flutterSdkPath": "/Users/aniketgodambe/Flutter-Dev/flutter3.13.9",
-    "cmake.sourceDirectory": "/Users/aniketgodambe/Developemnt/Projects/gathrr/linux",
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit"
     }
