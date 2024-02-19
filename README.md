@@ -16,7 +16,7 @@ https://github.com/AniketGodambe/gathrr
 # Install Dependencies
 flutter pub get
 
-# for build apk for android 
+# build apk for android 
 flutter build apk
 
 # for build apk for iOS 
